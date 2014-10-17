@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+	<appender class="org.apache.log4j.RollingFileAppender" name="HEAP_LOG">
+        <param name="File" value="logs/HEAP.log"/>
+        <param name="Append" value="true" />
+        <param name="encoding"  value="UTF8"/>
+        <param name="MaxBackupIndex" value="1"/>
+        <param name="MaxFileSize" value="5MB"/>
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern"
+				value="%d{dd-MM-yyyy HH:mm:ss,SSS} - [%-5p,%30.100c] &quot;%m&quot;%n" />
+		</layout>
+    </appender>
+    <appender name="HEAP_LOG_ASYNC" class="org.apache.log4j.AsyncAppender">
+        <param name="BufferSize" value="500"/>
+        <appender-ref ref="HEAP_LOG"/>
+    </appender>
+    
+    <appender class="org.apache.log4j.RollingFileAppender" name="DISPATCHER_LOG">
+        <param name="File" value="logs/DISPATCHER.log"/>
+        <param name="Append" value="true" />
+        <param name="encoding"  value="UTF8"/>
+        <param name="MaxBackupIndex" value="1"/>
+        <param name="MaxFileSize" value="5MB"/>
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern"
+				value="%d{dd-MM-yyyy HH:mm:ss,SSS} - [%-5p,%30.100c] &quot;%m&quot;%n" />
+		</layout>
+    </appender>
+    <appender name="DISPATCHER_LOG_ASYNC" class="org.apache.log4j.AsyncAppender">
+        <param name="BufferSize" value="500"/>
+        <appender-ref ref="DISPATCHER_LOG"/>
+    </appender>
+    
+    <appender class="org.apache.log4j.RollingFileAppender" name="WORKER_LOG">
+        <param name="File" value="logs/WORKER.log"/>
+        <param name="Append" value="true" />
+        <param name="encoding"  value="UTF8"/>
+        <param name="MaxBackupIndex" value="1"/>
+        <param name="MaxFileSize" value="5MB"/>
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern"
+				value="%d{dd-MM-yyyy HH:mm:ss,SSS} - [%-5p,%30.100c] &quot;%m&quot;%n" />
+		</layout>
+    </appender>
+    <appender name="WORKER_LOG_ASYNC" class="org.apache.log4j.AsyncAppender">
+        <param name="BufferSize" value="500"/>
+        <appender-ref ref="WORKER_LOG"/>
+    </appender>
+    
+    <appender class="org.apache.log4j.RollingFileAppender" name="SYSTEM_LOG">
+        <param name="File" value="logs/SYSTEM.log"/>
+        <param name="Append" value="true" />
+        <param name="encoding"  value="UTF8"/>
+        <param name="MaxBackupIndex" value="1"/>
+        <param name="MaxFileSize" value="5MB"/>
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern"
+				value="%d{dd-MM-yyyy HH:mm:ss,SSS} - [%-5p,%30.100c] &quot;%m&quot;%n" />
+		</layout>
+    </appender>
+    <appender name="SYSTEM_LOG_ASYNC" class="org.apache.log4j.AsyncAppender">
+        <param name="BufferSize" value="500"/>
+        <appender-ref ref="SYSTEM_LOG"/>
+    </appender>
+    
+    <appender class="org.apache.log4j.RollingFileAppender" name="WEB_LOG">
+        <param name="File" value="logs/WEB.log"/>
+        <param name="Append" value="true" />
+        <param name="encoding"  value="UTF8"/>
+        <param name="MaxBackupIndex" value="1"/>
+        <param name="MaxFileSize" value="5MB"/>
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern"
+				value="%d{dd-MM-yyyy HH:mm:ss,SSS} - [%-5p,%30.100c] &quot;%m&quot;%n" />
+		</layout>
+    </appender>
+    <appender name="WEB_LOG_ASYNC" class="org.apache.log4j.AsyncAppender">
+        <param name="BufferSize" value="500"/>
+        <appender-ref ref="WEB_LOG"/>
+    </appender>
+
+	<!-- 
+	SYSTEM 
+	-->
+    <logger name="SYSTEM">
+        <level value="debug"/>
+        <appender-ref ref="SYSTEM_LOG_ASYNC"/>
+    </logger>
+
+    <logger name="org.springframework">
+        <level value="debug"/>
+        <appender-ref ref="SYSTEM_LOG_ASYNC"/>
+    </logger>
+    
+    <!-- 
+     -->
+ 	<logger name="DISPATCHER">
+        <level value="debug"/>
+        <appender-ref ref="DISPATCHER_LOG_ASYNC"/>
+    </logger>
+    
+    <!-- 
+     -->
+ 	<logger name="WORKER">
+        <level value="debug"/>
+        <appender-ref ref="WORKER_LOG_ASYNC"/>
+    </logger>
+
+	<!-- WEB -->
+	<logger name="freemarker">
+        <level value="debug"/>
+        <appender-ref ref="WEB_LOG_ASYNC"/>
+    </logger>
+    <logger name="org.eclipse.jetty">
+        <level value="debug"/>
+        <appender-ref ref="WEB_LOG_ASYNC"/>
+    </logger>
+    <logger name="spark">
+        <level value="debug"/>
+        <appender-ref ref="WEB_LOG_ASYNC"/>
+    </logger>
+    
+	<!--
+	root  
+	-->
+    <root>
+        <level value="debug"/>
+        <appender-ref ref="HEAP_LOG_ASYNC"/>
+    </root>
+</log4j:configuration>
