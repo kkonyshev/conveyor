@@ -3,58 +3,59 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<version>0.1-SNAPSHOT</version>
+	<groupId>ru.kkonyshev</groupId>
+	<artifactId>conveyor</artifactId>
+	<version>0.2-SNAPSHOT</version>
 
 	<properties>
 		<slf4jVersion>1.6.1</slf4jVersion>
 		<spring-version>3.2.2.RELEASE</spring-version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<main.class>conveyor.Gate</main.class>
 	</properties>
 
 	<dependencies>
-
+		<!-- WEB -->
 		<dependency>
 			<groupId>spark</groupId>
 			<artifactId>spark</artifactId>
 			<version>0.9.9.4-SNAPSHOT</version>
 		</dependency>
 
-		<dependency>
-			<groupId>org.freemarker</groupId>
-			<artifactId>freemarker</artifactId>
-			<version>2.3.19</version>
-		</dependency>
-
+		<!-- DI -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
 			<version>${spring-version}</version>
 		</dependency>
-
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-test</artifactId>
-			<version>${spring-version}</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.8.2</version>
-			<scope>test</scope>
-		</dependency>
-
+		
+		<!-- Logging -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
 			<version>${slf4jVersion}</version>
 		</dependency>
+		
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
 			<version>${slf4jVersion}</version>
 		</dependency>
 
+		<!-- Testing -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>${spring-version}</version>
+			<scope>test</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.8.2</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<repositories>
@@ -62,46 +63,10 @@
 			<id>Spark repository</id>
 			<url>http://www.sparkjava.com/nexus/content/repositories/spark/</url>
 		</repository>
-		<repository>
-			<id>predic8-releases</id>
-			<url>http://repository.membrane-soa.org/content/repositories/releases</url>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
-		<repository>
-			<id>checker-framework-repo</id>
-			<url>http://types.cs.washington.edu/m2-repo</url>
-		</repository>
 	</repositories>
-	<pluginRepositories>
-		<pluginRepository>
-			<id>checker-framework-repo</id>
-			<url>http://types.cs.washington.edu/m2-repo</url>
-		</pluginRepository>
-	</pluginRepositories>
 
-	<profiles>
-		<profile>
-			<id>single</id>
-			<activation>
-				<activeByDefault>false</activeByDefault>
-			</activation>
-			<build>
-				<plugins>
-					<!-- <plugin> <groupId>org.checkerframework</groupId> <artifactId>checkerframework-maven-plugin</artifactId> 
-						<version>1.8.0</version> <configuration> <processors> <processor>org.checkerframework.checker.nullness.NullnessChecker</processor> 
-						<processor>org.checkerframework.checker.interning.InterningChecker</processor> 
-						</processors> </configuration> <executions> <execution> <phase>process-classes</phase> 
-						<goals> <goal>check</goal> </goals> </execution> </executions> </plugin> -->
+	
 
-				</plugins>
-			</build>
-		</profile>
-	</profiles>
 	<!-- Configure maven-compiler-plugin version. -->
 	<build>
 		<plugins>
@@ -124,7 +89,7 @@
 					</descriptorRefs>
 					<archive>
 						<manifest>
-							<mainClass>conveyor.Gate</mainClass>
+							<mainClass>${main.class}</mainClass>
 						</manifest>
 					</archive>
 				</configuration>
@@ -138,11 +103,10 @@
 					</execution>
 				</executions>
 			</plugin>
-
-
 		</plugins>
 	</build>
-
-	<artifactId>conveyor</artifactId>
-	<groupId>ru.kkonyshev</groupId>
+	<scm>
+		<url>https://github.com/kkonyshev/conveyor</url>
+		<developerConnection>Konyshev Konstantin</developerConnection>
+	</scm>
 </project>

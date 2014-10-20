@@ -17,17 +17,15 @@ import conveyor.dto.ItemDto;
 public class DispatcherSingleItemTest {
 
 	@Autowired
-	private Dispatcher<Item> dispatcherProto;
+	private Dispatcher<Item> dispatcher;
 	
 	@Test
 	public void testSingleItemQueueItemExist() throws InterruptedException {
 		Long initGroupId = 1L;
 		Long consumerId  = 1L;
-		dispatcherProto.addItem(new ItemDto(initGroupId, 1L));
+		dispatcher.addItem(new ItemDto(initGroupId, 1L));
 
-		Long groupIdToWork = dispatcherProto.leaseGroupId(consumerId);
+		Long groupIdToWork = dispatcher.leaseGroupId(consumerId);
 		Assert.assertEquals("Ожидается наличие единственной группы", initGroupId, groupIdToWork);
-		//remove item from queue
-		dispatcherProto.getNext(initGroupId);
 	}
 }

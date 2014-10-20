@@ -15,15 +15,15 @@ import conveyor.dto.ItemDto;
 public class ProducerIllegalItemTest {
 
 	@Autowired
-	private Producer<Item> dispatcherProto;
+	private Producer<Item> dispatcher;
 
 	@Test(expected=IllegalArgumentException.class)
 	public void testDispatcherBadElementNoGroupIdItemId() throws InterruptedException {
-		dispatcherProto.addItem(new ItemDto(null, null));
+		dispatcher.addItem(new ItemDto(null, null));
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void testDispatcherBadElementNoGroupId() throws InterruptedException {
-		dispatcherProto.addItem(new ItemDto(null, 1L));
+		dispatcher.addItem(new ItemDto(null, 1L));
 	}
 }

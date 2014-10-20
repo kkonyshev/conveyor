@@ -1,32 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
 <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
-
-	<appender class="org.apache.log4j.RollingFileAppender" name="HEAP_LOG">
-        <param name="File" value="logs/HEAP.log"/>
-        <param name="Append" value="false" />
-        <param name="encoding"  value="UTF8"/>
-        <param name="MaxBackupIndex" value="1"/>
-        <param name="MaxFileSize" value="5MB"/>
-		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern"
-				value="%d{dd-MM-yyyy HH:mm:ss,SSS} - [%-5p,%30.30c] &quot;%m&quot;%n" />
-		</layout>
-    </appender>
-    <appender name="HEAP_LOG_ASYNC" class="org.apache.log4j.AsyncAppender">
-        <param name="BufferSize" value="500"/>
-        <appender-ref ref="HEAP_LOG"/>
-    </appender>
     
     <appender class="org.apache.log4j.RollingFileAppender" name="DISPATCHER_LOG">
         <param name="File" value="logs/DISPATCHER.log"/>
         <param name="Append" value="false" />
         <param name="encoding"  value="UTF8"/>
-        <param name="MaxBackupIndex" value="1"/>
+        <param name="MaxBackupIndex" value="0"/>
         <param name="MaxFileSize" value="5MB"/>
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern"
-				value="%d{dd-MM-yyyy HH:mm:ss,SSS} - [%-5p,%30.30c] &quot;%m&quot;%n" />
+				value="%d{dd-MM-yyyy HH:mm:ss,SSS} - [%-5p,%10.10c] &quot;%m&quot;%n" />
 		</layout>
     </appender>
     <appender name="DISPATCHER_LOG_ASYNC" class="org.apache.log4j.AsyncAppender">
@@ -34,27 +18,27 @@
         <appender-ref ref="DISPATCHER_LOG"/>
     </appender>
     
-    <appender class="org.apache.log4j.RollingFileAppender" name="WORKER_LOG">
-        <param name="File" value="logs/WORKER.log"/>
+    <appender class="org.apache.log4j.RollingFileAppender" name="PROCESSING_LOG">
+        <param name="File" value="logs/PROCESSING.log"/>
         <param name="Append" value="false" />
         <param name="encoding"  value="UTF8"/>
-        <param name="MaxBackupIndex" value="1"/>
+        <param name="MaxBackupIndex" value="0"/>
         <param name="MaxFileSize" value="5MB"/>
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern"
-				value="%d{dd-MM-yyyy HH:mm:ss,SSS} - [%-5p,%30.30c] &quot;%m&quot;%n" />
+				value="%d{dd-MM-yyyy HH:mm:ss,SSS} - [%-5p,%10.10c] &quot;%m&quot;%n" />
 		</layout>
     </appender>
-    <appender name="WORKER_LOG_ASYNC" class="org.apache.log4j.AsyncAppender">
+    <appender name="PROCESSING_LOG_ASYNC" class="org.apache.log4j.AsyncAppender">
         <param name="BufferSize" value="500"/>
-        <appender-ref ref="WORKER_LOG"/>
+        <appender-ref ref="PROCESSING_LOG"/>
     </appender>
     
     <appender class="org.apache.log4j.RollingFileAppender" name="SYSTEM_LOG">
         <param name="File" value="logs/SYSTEM.log"/>
         <param name="Append" value="false" />
         <param name="encoding"  value="UTF8"/>
-        <param name="MaxBackupIndex" value="1"/>
+        <param name="MaxBackupIndex" value="0"/>
         <param name="MaxFileSize" value="5MB"/>
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern"
@@ -70,7 +54,7 @@
         <param name="File" value="logs/WEB.log"/>
         <param name="Append" value="false" />
         <param name="encoding"  value="UTF8"/>
-        <param name="MaxBackupIndex" value="1"/>
+        <param name="MaxBackupIndex" value="0"/>
         <param name="MaxFileSize" value="5MB"/>
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern"
@@ -104,9 +88,9 @@
     
     <!-- 
      -->
- 	<logger name="WORKER">
+ 	<logger name="PROCESSING">
         <level value="debug"/>
-        <appender-ref ref="WORKER_LOG_ASYNC"/>
+        <appender-ref ref="PROCESSING_LOG_ASYNC"/>
     </logger>
 
 	<!-- WEB -->
@@ -128,6 +112,6 @@
 	-->
     <root>
         <level value="debug"/>
-        <appender-ref ref="HEAP_LOG_ASYNC"/>
+        <appender-ref ref="SYSTEM_LOG_ASYNC"/>
     </root>
 </log4j:configuration>

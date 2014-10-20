@@ -16,18 +16,35 @@ import conveyor.api.ThreadProcessor;
  */
 public class ThreadProcessorImpl extends Thread implements ThreadProcessor<Item> {
 	
-	private static final int DEFAULT_ITEM_COUNT_THRESHOLD = 5;
+	private static final String CONSUMER = "Processor [";
 
-	private Logger logger = Utils.Logging.WORKER;
+	public static final int DEFAULT_ITEM_COUNT_THRESHOLD = 5;
+
+	private Logger logger = Utils.Logging.PROCESSING;
 	
-	private Long processorId;
 	
 	@Autowired
 	private Consumer<Item> dispatcher;
 	
+	/**
+	 * Идентификатор обрабатываемой группы
+	 */
 	private Long groupId;
+	
+	/**
+	 * Количество обработанных элементов после последнего запроса группы обработки
+	 */
 	private Integer processedItemCount = 0;
+	
+	/**
+	 * Счетчик обработанных элементов для смены группы 
+	 */
 	private Integer itemCountThreshold;
+	
+	/**
+	 * Общее количество обработанных элементов
+	 */
+	private Integer totalProcessedCount = 0;
 	
 	public ThreadProcessorImpl() {
 		this(DEFAULT_ITEM_COUNT_THRESHOLD);
@@ -35,8 +52,7 @@ public class ThreadProcessorImpl extends Thread implements ThreadProcessor<Item>
 	
 	public ThreadProcessorImpl(Integer itemCountThreshold) {
 		this.itemCountThreshold = itemCountThreshold;
-		this.processorId = getId();
-		logger.info("Consumer [" + getProcessotId() + "]: Initing. Item count threshold is: " + itemCountThreshold);
+		logger.info(CONSUMER + getProcessotId() + "]: Initing. Item count threshold is: " + itemCountThreshold);
 	}
 	
 	@Override
@@ -52,36 +68,40 @@ public class ThreadProcessorImpl extends Thread implements ThreadProcessor<Item>
 					leaseGroupId();
 				}
 			} catch (InterruptedException e) {
-				logger.error("Consumer [" + getProcessotId() + "]: interrupted", e);
+				logger.error(CONSUMER + getProcessotId() + "]: interrupted", e);
+				//TODO send onAfter die event
 			}
 		}
 	}
 
+	/**
+	 * Метод запрашивает у диспетчера идентификатор группы для обработки и сбрасывает счетчик обработанных элементов из прошлой группы. 
+	 * 
+	 * @throws InterruptedException
+	 */
 	private void leaseGroupId() throws InterruptedException {
-		logger.info("Consumer [" + getProcessotId() + "]: releasing new groupId to process");
+		logger.info(CONSUMER + getProcessotId() + "]: releasing new groupId to process");
 		this.groupId = dispatcher.leaseGroupId(getProcessotId());
-		logger.info("Consumer [" + getProcessotId() + "]: reserving - " + groupId);
+		logger.info(CONSUMER + getProcessotId() + "]: reserving - " + groupId);
 		processedItemCount = 0;
 	}
 
 	/**
-	 * Метод обработки элементов очереди
+	 * Метод обработки элемента очереди
 	 * 
 	 * @param item
 	 */
 	protected void process(Item item) {
-		logger.info("Consumer [" + getProcessotId() + "]: processing item - " + item);
+		logger.info(CONSUMER + getProcessotId() + "]: processing item - " + item);
 		try {
+			totalProcessedCount++;
 			StringBuilder sb = new StringBuilder();
-			/*for (Long i=0L;i<getProcessotId();i++) {
-				sb.append("           ");
-			}*/
-			sb.append(getProcessotId()).append(":").append(item);
+			sb.append(getProcessotId()).append(":").append(item).append("/").append(totalProcessedCount);
 			System.out.println(sb.toString());
 			processedItemCount++;
 			Thread.sleep(100);
 		} catch (Exception e) {
-			Utils.Logging.WORKER.error("Consumer [" + getProcessotId() + "]: item marked as filed - " + item);
+			logger.error(CONSUMER + getProcessotId() + "]: item marked as filed - " + item);
 			dispatcher.markItemFailed(item);
 		}
 	}
@@ -97,10 +117,10 @@ public class ThreadProcessorImpl extends Thread implements ThreadProcessor<Item>
 	}
 
 	public Long getProcessotId() {
-		return processorId;
+		return getId();
 	}
 
-	public void setProcessorId(Long processotId) {
-		this.processorId = processotId;
+	public Integer getTotalProcessedCount() {
+		return totalProcessedCount;
 	}
 }

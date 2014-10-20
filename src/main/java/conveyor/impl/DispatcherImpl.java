@@ -34,7 +34,7 @@ public class DispatcherImpl implements Dispatcher<Item> {
 	private static Logger logger = Utils.Logging.DISPATCHER;
 	
 	/**
-	 * Очередь элементов на обработку по разбитая по группам
+	 * Очередь элементов на обработку по группам
 	 */
 	private Map<Long, LockedLinkedList<Item>> queueMap = new ConcurrentHashMap<Long, LockedLinkedList<Item>>();
 	
@@ -142,21 +142,29 @@ public class DispatcherImpl implements Dispatcher<Item> {
 		leaseLock.lock();
 		try {
 			Long groupId = null;
-			Long prevReservedGroupId = consumerToGroupRegistry.remove(consumerId);
-			HashSet<Long> freeGroupIds = createGroupIdsForLeasing();
-			if (freeGroupIds.isEmpty()) {
-				freeGroupAvailable.await();
-				freeGroupIds = createGroupIdsForLeasing();
+			while (groupId==null) {
+				Long prevReservedGroupId = consumerToGroupRegistry.remove(consumerId);
+				logger.debug("requesting group for processor [" + consumerId + "], prevGroupId is " + prevReservedGroupId);
+				HashSet<Long> freeGroupIds = createGroupIdsForLeasing();
+				logger.debug("requesting group for processor [" + consumerId + "], freeGroupIds is " + freeGroupIds);
+				if (freeGroupIds.isEmpty()) {
+					logger.debug("requesting group for processor [" + consumerId + "], waiting");
+					freeGroupAvailable.await();
+					continue;
+				}
+				freeGroupIds.remove(prevReservedGroupId);
+				if (freeGroupIds.isEmpty()) {
+					logger.debug("requesting group for processor [" + consumerId + "], use prevGroupId");
+					groupId = prevReservedGroupId;
+				} else {
+					Random randomGenerator = new Random();
+				    int index = randomGenerator.nextInt(freeGroupIds.size());
+				    logger.debug("requesting group for processor [" + consumerId + "], renerated random index " + index);
+					groupId = (Long) freeGroupIds.toArray()[index];
+					logger.debug("requesting group for processor [" + consumerId + "], new groupId is " + groupId);
+				}
+				consumerToGroupRegistry.put(consumerId, groupId);
 			}
-			freeGroupIds.remove(prevReservedGroupId);
-			if (freeGroupIds.isEmpty()) {
-				groupId = prevReservedGroupId;
-			} else {
-				Random randomGenerator = new Random();
-			    int index = randomGenerator.nextInt(freeGroupIds.size());
-				groupId = (Long) freeGroupIds.toArray()[index];
-			}
-			consumerToGroupRegistry.put(consumerId, groupId);
 			return groupId;
 		} finally {
 			leaseLock.unlock();

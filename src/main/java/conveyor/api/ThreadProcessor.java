@@ -17,4 +17,9 @@ public interface ThreadProcessor<I> {
 	 * @param itemCountThreshold
 	 */
 	void setItemCountThreshold(Integer itemCountThreshold);
+	
+	/**
+	 * 
+	 */
+	Integer getTotalProcessedCount();
 }

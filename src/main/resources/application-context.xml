@@ -12,11 +12,4 @@
 
 	<bean id="dispatcher" class="conveyor.impl.DispatcherImpl"/>
 	<bean id="threadProcessor" class="conveyor.impl.ThreadProcessorImpl" scope="prototype"/>
-	
-	<!-- <bean id="b1" class="ioc.BeanImpl" scope="prototype">
-		<property name="component">
-			<ref bean="coponent1"/>
-		</property>
-	</bean> -->
-	
 </beans>

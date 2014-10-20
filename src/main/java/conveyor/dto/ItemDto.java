@@ -3,6 +3,7 @@ package conveyor.dto;
 import conveyor.api.Item;
 
 /**
+ * Обрабатываемый объект
  * 
  * @author kkonyshev
  *
