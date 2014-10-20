@@ -99,7 +99,7 @@ public class ThreadProcessorImpl extends Thread implements ThreadProcessor<Item>
 			sb.append(getProcessotId()).append(":").append(item).append("/").append(totalProcessedCount);
 			System.out.println(sb.toString());
 			processedItemCount++;
-			Thread.sleep(100);
+			//Thread.sleep(100);
 		} catch (Exception e) {
 			logger.error(CONSUMER + getProcessotId() + "]: item marked as filed - " + item);
 			dispatcher.markItemFailed(item);
