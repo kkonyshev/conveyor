@@ -15,7 +15,7 @@ import java.util.concurrent.locks.ReentrantLock;
 public class LockedLinkedList<I> extends LinkedList<I> {
 	
 	private static final long serialVersionUID = 1L;
-	private Lock lock = new ReentrantLock();
+	private Lock lock = new ReentrantLock(true);
 	private Condition isEmpty  = lock.newCondition();
 	
 	/**

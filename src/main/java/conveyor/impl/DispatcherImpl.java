@@ -46,7 +46,7 @@ public class DispatcherImpl implements Dispatcher<Item> {
 	/**
 	 * Блокировка резервирования группы обработки
 	 */
-	private Lock 		leaseLock 			= new ReentrantLock();
+	private Lock 		leaseLock 			= new ReentrantLock(true);
 	
 	/**
 	 * Условие появления свободных для резервирования групп
@@ -73,7 +73,7 @@ public class DispatcherImpl implements Dispatcher<Item> {
 			logger.info(ADDING_TO_QUEUE + item);
 			groupList.add(item);
 			Collections.sort(groupList);
-			groupList.emptyCondition().signalAll();
+			groupList.emptyCondition().signal();
 		} finally {
 			groupList.unlock();
 		}
@@ -82,7 +82,7 @@ public class DispatcherImpl implements Dispatcher<Item> {
 		try {
 			HashSet<Long> leasingGroup = createGroupIdsForLeasing();
 			if (!leasingGroup.isEmpty()) {
-				freeGroupAvailable.signalAll();
+				freeGroupAvailable.signal();
 			}
 		} finally {
 			leaseLock.unlock();
