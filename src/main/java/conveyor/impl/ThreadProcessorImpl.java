@@ -60,11 +60,13 @@ public class ThreadProcessorImpl extends Thread implements ThreadProcessor<Item>
 		while (true) {
 			try {
 				if (processedItemCount>=itemCountThreshold || groupId==null) {
+					logger.info(CONSUMER + getProcessotId() + "]: release new groupId");
 					leaseGroupId();
 				}
 				if (dispatcher.hasNextItem(groupId)) {
 					process(dispatcher.getNext(groupId));
 				} else {
+					logger.info(CONSUMER + getProcessotId() + "]: no more items in group: " + groupId);
 					leaseGroupId();
 				}
 			} catch (InterruptedException e) {
