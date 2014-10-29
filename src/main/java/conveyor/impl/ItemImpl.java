@@ -1,4 +1,4 @@
-package conveyor.dto;
+package conveyor.impl;
 
 import conveyor.api.Item;
 
@@ -8,11 +8,11 @@ import conveyor.api.Item;
  * @author kkonyshev
  *
  */
-public class ItemDto implements Item {
+public class ItemImpl implements Item {
 	private Long id;
 	private Long groupId;
 	
-	public ItemDto(Long groupId, Long id) {
+	public ItemImpl(Long groupId, Long id) {
 		this.groupId = groupId;
 		this.id = id;
 	}

@@ -10,6 +10,11 @@
 	<context:component-scan base-package="conveyor"/>
 	<context:annotation-config/>
 
-	<bean id="dispatcher" class="conveyor.impl.DispatcherImpl"/>
+	<bean id="lockedQuque" class="conveyor.impl.LockedQuqueImpl"/>
+	<bean id="consumerRegistry" class="conveyor.impl.ConsumerRegistryImpl"/>
+	
+	<bean id="consumer" class="conveyor.impl.ConsumerImpl"/>
+	<bean id="producer" class="conveyor.impl.ProducerImpl"/>
+	
 	<bean id="threadProcessor" class="conveyor.impl.ThreadProcessorImpl" scope="prototype"/>
 </beans>

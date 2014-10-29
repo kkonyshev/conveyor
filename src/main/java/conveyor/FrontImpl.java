@@ -8,7 +8,7 @@ import spark.Response;
 import spark.Route;
 import spark.servlet.SparkApplication;
 import conveyor.api.Item;
-import conveyor.dto.ItemDto;
+import conveyor.impl.ItemImpl;
 
 /**
  * Описание web-сервисов для добавления элементов в очередь обработки
@@ -73,7 +73,7 @@ public class FrontImpl implements SparkApplication {
 		            	for (int count=0; count<batchSize; count++) {
 			            	Long itemGroupId  = Utils.randLong(0, 5);
 			        		Long randomItemId = Utils.randLong(0, 150);
-			        		itemList.add(new ItemDto(itemGroupId, randomItemId));
+			        		itemList.add(new ItemImpl(itemGroupId, randomItemId));
 			        	}
 		            	for (Item i: itemList) {
 		            		service.addItem(i);
@@ -97,7 +97,7 @@ public class FrontImpl implements SparkApplication {
 			            	Object idObject = request.queryParams(QUERY_PARAM_ID);
 			            	Long groupId = Long.valueOf(groupIdObject.toString());
 			            	Long id = Long.valueOf(idObject.toString());
-			            	Item i = new ItemDto(groupId, id);
+			            	Item i = new ItemImpl(groupId, id);
 			            	service.addItem(i);
 			            	return i;
 			            } catch (Exception e) {

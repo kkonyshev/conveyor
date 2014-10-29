@@ -1,5 +1,6 @@
 package conveyor.test;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,36 +8,37 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import conveyor.Utils;
-import conveyor.api.Dispatcher;
 import conveyor.api.Item;
-import conveyor.dto.ItemDto;
+import conveyor.api.Producer;
+import conveyor.impl.ItemImpl;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:application-context-test.xml"})
+@Ignore
 public class DispatcherQueueWorkTest {
 
 	@Autowired
-	private Dispatcher<Item> dispatcher;
+	private Producer<Item> producer;
 	
 	@Autowired
-	private Thread consumer;
+	private Thread threadProcessor;
 	
 	@Test
 	public void testWork() {
 		Long itemGroupId = 0L;
 		for (int count=0; count<10; count++) {
 			Long gandomItemId = Utils.randLong(0, 150);
-			dispatcher.addItem(new ItemDto(itemGroupId, gandomItemId));
+			producer.addItem(new ItemImpl(itemGroupId, gandomItemId));
 		}
 		
-		consumer.start();
+		threadProcessor.start();
 		for (int count=0; count<10; count++) {
 			Long randomItemId = Utils.randLong(0, 150);
-			dispatcher.addItem(new ItemDto(itemGroupId, randomItemId));
+			producer.addItem(new ItemImpl(itemGroupId, randomItemId));
 		}
 		try {
 			Thread.sleep(1000);
-			consumer.interrupt();
+			threadProcessor.interrupt();
 		} catch (InterruptedException ex) {
 			
 		}

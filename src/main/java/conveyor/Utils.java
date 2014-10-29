@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import conveyor.impl.DispatcherImpl;
+import conveyor.impl.ProducerImpl;
 import conveyor.impl.ThreadProcessorImpl;
 
 /**
@@ -37,8 +37,8 @@ public abstract class Utils {
 	public static class Context {
 		private static ApplicationContext applicationContext = new ClassPathXmlApplicationContext("application-context.xml");
 		
-		public static DispatcherImpl getDispatcher() {
-			return (DispatcherImpl)applicationContext.getBean("dispatcher");
+		public static ProducerImpl getDispatcher() {
+			return (ProducerImpl)applicationContext.getBean("producer");
 		}
 		
 		public static ThreadProcessorImpl createThreadProcessorInstance() {

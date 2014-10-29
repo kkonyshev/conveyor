@@ -24,7 +24,7 @@ public class ThreadProcessorImpl extends Thread implements ThreadProcessor<Item>
 	
 	
 	@Autowired
-	private Consumer<Item> dispatcher;
+	private Consumer<Item> consumer;
 	
 	/**
 	 * Идентификатор обрабатываемой группы
@@ -63,8 +63,8 @@ public class ThreadProcessorImpl extends Thread implements ThreadProcessor<Item>
 					logger.info(CONSUMER + getProcessotId() + "]: release new groupId");
 					leaseGroupId();
 				}
-				if (dispatcher.hasNextItem(groupId)) {
-					process(dispatcher.getNext(groupId));
+				if (consumer.hasNextItem(groupId)) {
+					process(consumer.getNext(groupId));
 				} else {
 					logger.info(CONSUMER + getProcessotId() + "]: no more items in group: " + groupId);
 					leaseGroupId();
@@ -83,7 +83,7 @@ public class ThreadProcessorImpl extends Thread implements ThreadProcessor<Item>
 	 */
 	private void leaseGroupId() throws InterruptedException {
 		logger.info(CONSUMER + getProcessotId() + "]: releasing new groupId to process");
-		this.groupId = dispatcher.leaseGroupId(getProcessotId());
+		this.groupId = consumer.leaseGroupId(getProcessotId());
 		logger.info(CONSUMER + getProcessotId() + "]: reserving - " + groupId);
 		processedItemCount = 0;
 	}
@@ -104,7 +104,7 @@ public class ThreadProcessorImpl extends Thread implements ThreadProcessor<Item>
 			//Thread.sleep(100);
 		} catch (Exception e) {
 			logger.error(CONSUMER + getProcessotId() + "]: item marked as filed - " + item);
-			dispatcher.markItemFailed(item);
+			consumer.markItemFailed(item);
 		}
 	}
 
