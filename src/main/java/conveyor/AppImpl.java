@@ -17,7 +17,7 @@ public class AppImpl implements Producer<Item> {
 	
 	public static Integer DEFAULT_THREAD_NUMBER = 2;    
     
-	private Producer<Item> dispatcher;
+	private Producer<Item> producer;
 	private ExecutorService executors;
 	
 	private Integer threadNumber;
@@ -37,7 +37,7 @@ public class AppImpl implements Producer<Item> {
 	 */
 	//TODO redefine pool size online
 	public void init() {
-		dispatcher = Utils.Context.getDispatcher();
+		producer = Utils.Context.getProducer();
 		executors = Executors.newFixedThreadPool(threadNumber);
         for (Integer threadCount=0; threadCount<threadNumber; threadCount++) {
         	ThreadProcessorImpl bean = Utils.Context.createThreadProcessorInstance();
@@ -48,6 +48,6 @@ public class AppImpl implements Producer<Item> {
 
 	@Override
 	public void addItem(Item item) {
-		dispatcher.addItem(item);
+		producer.addItem(item);
 	}
 }

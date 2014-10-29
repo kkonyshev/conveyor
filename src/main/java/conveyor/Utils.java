@@ -37,7 +37,7 @@ public abstract class Utils {
 	public static class Context {
 		private static ApplicationContext applicationContext = new ClassPathXmlApplicationContext("application-context.xml");
 		
-		public static ProducerImpl getDispatcher() {
+		public static ProducerImpl getProducer() {
 			return (ProducerImpl)applicationContext.getBean("producer");
 		}
 		

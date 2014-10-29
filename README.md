@@ -17,8 +17,8 @@ conveyor
 
 3. Запуск:
 --------------
-- 3.1 с параметрами по-умолчанию (2 потока, порт 8082): **java -jar conveyor-0.2-SNAPSHOT-jar-with-dependencies.jar**
-- 3.2 описание параметров запуска: **java -jar conveyor-0.2-SNAPSHOT-jar-with-dependencies.jar -h**
+- 3.1 с параметрами по-умолчанию (2 потока, порт 8082): **java -jar conveyor-0.X-SNAPSHOT-jar-with-dependencies.jar**
+- 3.2 описание параметров запуска: **java -jar conveyor-0.X-SNAPSHOT-jar-with-dependencies.jar -h**
 
 	
 4. добавление элементов в очередь обработки

@@ -4,7 +4,6 @@ import java.util.Random;
 
 import junit.framework.Assert;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +16,7 @@ import conveyor.api.Producer;
 import conveyor.impl.ItemImpl;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:application-context-test.xml"})
-@Ignore
+@ContextConfiguration(locations = {"classpath:application-context-test-sorting.xml"})
 public class DispatcherQueueSortingTest {
 
 	@Autowired
